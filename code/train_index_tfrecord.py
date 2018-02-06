@@ -20,16 +20,9 @@ for each in range(len(config)):
         data_path = data[each]
         for num_data in range(data_path.shape[0]):
             temp_data = data[each][num_data][1:]
-            print(temp_data)
-            # fig = plt.figure()
-            # plotwindow = fig.add_subplot(111)
-            # plt.imshow(image, cmap='gray')    # cmap  图像为灰度图
-            # label = data[each][num_image][0]
-            # print(label)
-            # plt.show()
             data_byte = temp_data.tobytes()
             label = data[each][num_data][0]
-            print(label)
+            # print(label)
             example = tf.train.Example(features=tf.train.Features(feature={  
                     "label": tf.train.Feature(int64_list=tf.train.Int64List(value=[int(label)])),  
                     'data': tf.train.Feature(bytes_list=tf.train.BytesList(value=[data_byte]))  

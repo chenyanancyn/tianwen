@@ -1,6 +1,8 @@
 import csv  # 读取csv文件时用到
 import numpy as np
- 
+from normalization_self import normalization_self
+
+
 def test_numpy():
     # 读取csv文件，并存为numpy矩阵
     csv_reader = csv.reader(open('../first_test_index_20180131.csv', encoding='utf-8'))
@@ -29,6 +31,8 @@ def test_numpy():
         #     break
     Efield = np.array(Efield_0)
     # print(Efield.shape)
+    # 进行归一化处理
+    Efield = normalization_self(Efield)
 
     return Efield[0:50000], Efield[50000:]
     # return Efield[0:500], Efield[500:]
