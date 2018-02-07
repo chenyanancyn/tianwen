@@ -22,8 +22,8 @@ def train_index_numpy(use='unnormal'):
             break
 
     train_index_1 = np.array(train_index_0)
-    train_index = np.reshape(train_index_1, (483851, 2))
-    # train_index = np.reshape(train_index_1, (50, 2))
+    # train_index = np.reshape(train_index_1, (483851, 2))
+    train_index = np.reshape(train_index_1, (50, 2))
     # print(train_index)
 
 
@@ -31,7 +31,7 @@ def train_index_numpy(use='unnormal'):
     path_ini = '../first_train_data_20180131/'
     Efield_0 = []
 
-    # count = 0
+    count = 0
     for i in range(train_index.shape[0]):
         # if train_index[i][0] == 744889:
         #     continue
@@ -44,9 +44,9 @@ def train_index_numpy(use='unnormal'):
             # pos.insert(0, train_index[i][1])  # 进行归一化后，再进行拼接
             Efield_0.append(pos)
 
-                # count = count + 1
-                # if count == 50:
-                #     break
+        count = count + 1
+        if count == 50:
+            break
         
     Efield = np.array(Efield_0)
     # print(Efield.shape)
@@ -75,12 +75,12 @@ def train_index_numpy(use='unnormal'):
         train = np.array(train_0)
         validation = np.array(validation_0)
         test = np.array(test_0)
-        # print(train.shape)
-        # print(validation.shape)
-        # print(test.shape)
+        print(train.shape)
+        print(validation.shape)
+        print(test.shape)
 
-        return train[0:48385], train[48385:96770], train[96770:145155], train[145155:193540], train[193540:241925], train[241925:290310], train[290310:338695], train[338695:387080], validation, test
-        # return train[0:10], train[10:20], train[20:30], train[30:40], train[40:50], train[50:60], train[60:70], train[70:80], validation, test
+        # return train[0:48385], train[48385:96770], train[96770:145155], train[145155:193540], train[193540:241925], train[241925:290310], train[290310:338695], train[338695:387080], validation, test
+        return train[0:10], train[10:20], train[20:30], validation, test
 
 
 train_index_numpy(use='unnormal')

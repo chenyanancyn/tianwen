@@ -12,7 +12,7 @@ data = train_index_numpy()
 
 
 # 转为tfrecord文件
-config = ['train_1', 'train_2', 'train_3',  'train_4', 'train_5', 'train_6', 'train_7','train_8', 'validation', 'test']
+config = ['train_1', 'train_2', 'train_3', 'validation', 'test']
 for each in range(len(config)):
     mnist_type = config[each]
     # tfrecord格式文件名
@@ -20,6 +20,7 @@ for each in range(len(config)):
         data_path = data[each]
         for num_data in range(data_path.shape[0]):
             temp_data = data[each][num_data][1:]
+            # print(temp_data)
             data_byte = temp_data.tobytes()
             label = data[each][num_data][0]
             # print(label)

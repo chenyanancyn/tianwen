@@ -13,19 +13,19 @@ def read_tfrecord(config_dir, num=1):
     features = tf.parse_single_example(example,
                                         features={'label': tf.FixedLenFeature([], tf.int64),
                                                     'data': tf.FixedLenFeature([], tf.string)})  # 将对应的内存块读为张量流
-    image = tf.decode_raw(features['data'], tf.uint8)  # tf.decode_raw可以将字符串解析成图像对应的像素组
-    image = tf.cast(image, tf.float32)    # 解码之后转数据类型 
-    image = tf.reshape(image, [32, 48])
+    image = tf.decode_raw(features['data'], tf.float64)  # tf.decode_raw可以将字符串解析成图像对应的像素组
+    image = tf.cast(image, tf.float64)    # 解码之后转数据类型
+    image = tf.reshape(image, (2600, ))
     label = tf.cast(features['label'], tf.int32)  # 类型转换
     # 随机读取数据，验证图片对应正确性
     image_batch, label_batch = tf.train.shuffle_batch([image, label],
                                                         batch_size=1,
-                                                        capacity=100,
-                                                        min_after_dequeue=50)
+                                                        capacity=10,
+                                                        min_after_dequeue=0)
 
     # 开始一个会话
     with tf.Session() as sess:
-        exm_images = np.zeros((num, 1536))
+        exm_images = np.zeros((num, 2600))
         exm_labels = np.zeros((num, 1))
 
         init = tf.group(tf.global_variables_initializer(), tf.local_variables_initializer())
@@ -34,14 +34,16 @@ def read_tfrecord(config_dir, num=1):
         coord = tf.train.Coordinator()
         threads = tf.train.start_queue_runners(sess=sess, coord=coord)
         for count in range(num):
-
             image, label = sess.run([image_batch, label_batch])  # 在会话中取出image和label
-            img = image.reshape([32, 48])  # 这里要reshape因为默认一个批次处理的数据会外层嵌套一层
-            img = img.astype(np.uint8)  # PIL保存时，必须是整数
+            # img = image.reshape([32, 48])  # 这里要reshape因为默认一个批次处理的数据会外层嵌套一层
+            # img = img.astype(np.uint8)  # PIL保存时，必须是整数
+            print(image)
+            print(image.shape)
+            print(label)
             if num == 1:
                 coord.request_stop()  # 缩进格式不对
                 coord.join(threads)
-                return img, label
+                return image, label
             else:
                 image = image.reshape(1536)
                 # for i in range(784):
@@ -59,3 +61,5 @@ def read_tfrecord(config_dir, num=1):
         coord.join(threads)
     return exm_images, exm_labels
 
+
+read_tfrecord('data_train_1.tfrecords', num=1)
